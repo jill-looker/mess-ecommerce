@@ -95,6 +95,39 @@ view: order_items {
     drill_fields: [detail*]
   }
 
+  measure: order_count {
+    type: count_distinct
+    sql: ${order_id} ;;
+    drill_fields: [detail*]
+  }
+
+  measure: order_count_formatted {
+    type: count_distinct
+    sql: ${order_id} ;;
+    drill_fields: [detail*]
+    html:
+       {% if value > 100 %}
+          <font color="darkgreen">{{ rendered_value }}</font>
+        {% elsif value > 50 %}
+          <font color="goldenrod">{{ rendered_value }}</font>
+        {% else %}
+          <font color="darkred">{{ rendered_value }}</font>
+        {% endif %} ;;
+
+    }
+
+    measure: total_sales {
+      type: sum
+      sql: ${sale_price} ;;
+      drill_fields: [detail*]
+    }
+
+    measure: average_sales {
+      type: average
+      sql: ${sale_price} ;;
+      drill_fields: [detail*]
+    }
+
   # ----- Sets of fields for drilling ------
   set: detail {
     fields: [
